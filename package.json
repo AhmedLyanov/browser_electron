@@ -1,0 +1,14 @@
+{
+  "name": "VayBrowser",
+  "version": "1.0.0",
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "^latest"
+  },
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "description": "simple browser",
+  "author": "Ahmed",
+  "license": "ISC"
+}
