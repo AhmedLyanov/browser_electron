@@ -1,43 +1,43 @@
-
 const { app, BrowserWindow, ipcMain, Menu } = require("electron");
 const path = require("path");
 
-
 let mainWindow;
+
 function createWindow() {
- mainWindow = new BrowserWindow({
-   width: 800,
-   height: 600,
-   webPreferences: {
-     preload: path.join(__dirname, "preload.js"),
-     contextIsolation: true,
-     enableRemoteModule: false,
-   },
- });
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true,
+      enableRemoteModule: false,
+    },
+    maximized: true,
+  });
 
+  mainWindow.webContents.openDevTools();
+  mainWindow.loadFile("UI/index.html");
+  mainWindow.once("ready-to-show", () => {
+    mainWindow.show();
+  });
 
- mainWindow.loadFile("index.html");
- mainWindow.once("ready-to-show", () => {
-   mainWindow.show();
- });
+  ipcMain.on("open-url", (event, url) => {
+    mainWindow.loadURL(url);
+  });
 
- ipcMain.on("open-url", (event, url) => {
-   mainWindow.loadURL(url);
- });
- Menu.setApplicationMenu(null);
+  Menu.setApplicationMenu(null);
 }
-
 
 app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
- if (process.platform !== "darwin") {
-   app.quit();
- }
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
 });
 
 app.on("activate", () => {
- if (BrowserWindow.getAllWindows().length === 0) {
-   createWindow();
- }
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
 });
